@@ -1,4 +1,4 @@
-import conf from '../Conf.js'
+import conf from "../Config/Conf";
 import {Client , Account , ID , Databases , Storage , Query} from 'appwrite'
 
 export class Service {
@@ -14,20 +14,16 @@ export class Service {
         this.bucket = new Storage(this.client);
     }
 
-    async createPost({title , slug , content , featuredImage , status , userId}){
-        try{
+    async createPost({ title, slug, content, featuredImage, userId }) {
+        try {
             return await this.databases.createDocument(
-                conf.appwriteDatabaseId, conf.appwriteTableId , slug ,
-                {
-                    title,
-                    content,
-                    featuredImage,
-                    status,
-                    userId
-                }
-            )
-        } catch(error){
-            return error;
+                conf.appwriteDatabaseId,
+                conf.appwriteTableId,
+                slug,
+                { title, Content: content , FeaturedImage: featuredImage, userid: userId }
+            );
+        } catch(error) {
+            throw error;
         }
     }
     async updatePost(slug , {title , content , featuredImage , status}){
@@ -64,7 +60,7 @@ export class Service {
             return error;
         }
     }
-    async getAllPosts(queries = [Query.equal('status' , 'active')]){
+    async getAllPosts(queries = []){
         try{
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId, conf.appwriteTableId , queries ,
@@ -95,12 +91,23 @@ export class Service {
     async getFile(fileId){
         try{
             return await this.bucket.getFile(
-                conf.appwriteBucketId , fileId
+                conf.appwriteBucketId,
+                fileId
             )
         } catch(error){
             return error;
         }
     }
+    getFilePreview(fileId){
+    try{
+        return this.bucket.getFileView(
+            conf.appwriteBucketId,
+            fileId
+        );
+    } catch(error){
+        return error;
+    }
+}
 }
 
 

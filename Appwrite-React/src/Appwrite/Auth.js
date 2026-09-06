@@ -1,4 +1,4 @@
-import conf from './Config/Conf'
+import conf from '../Config/Conf'
 import {Client , Account , ID} from 'appwrite'
 
 // this class is used to handle all the authentication related operations with appwrite backend .
@@ -26,7 +26,10 @@ export class AuthService {
     }
     async Login({email, password}) {
         try{
-            const userAccount = await this.account.createEmailSession(email , password);
+            const userAccount = await this.account.createEmailPasswordSession({
+                email,
+                password
+            });
             return userAccount;
         } catch(error){
             throw error;
@@ -36,9 +39,8 @@ export class AuthService {
         try{
             return await this.account.get();
         } catch(error){
-            throw error;
+            return null;
         }
-        return null;
     }
     async Logout(){
         try{
@@ -47,8 +49,17 @@ export class AuthService {
             throw error;
         }
     }
+    async getFilePreview(fileId) {
+    try {
+        return this.bucket.getFilePreview(
+            conf.appwriteBucketId,
+            fileId
+        );
+    } catch(error) {
+        throw error;
+    }
+}
 }
 const authService = new AuthService();
 
-
-export default AuthService;
+export default authService;

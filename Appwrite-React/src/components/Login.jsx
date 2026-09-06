@@ -13,7 +13,7 @@ function Login() {
     const login = async (data) =>{
         setError(" ");
         try{
-            const session = authService.login(data);
+            const session = authService.Login(data);
             if(session){
                 const userData = await authService.getCurrUser();
                 if(userData){

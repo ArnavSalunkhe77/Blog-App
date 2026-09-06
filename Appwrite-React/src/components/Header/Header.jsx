@@ -1,5 +1,5 @@
 import React from 'react';
-import {Logo , LogoutBtn , Container} from '../index';
+import {Logo , LogoutBtn} from '../index';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'; 
 // useSelector hook is used to access the redux store and get the current user state. It allows us to conditionally render the LogoutBtn component based on whether a user is logged in or not.
@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import Container from '../container/Container';
 
 function Header() {
-    const auth = useSelector((state) => state.auth.status);
+   const authStatus = useSelector((state) => state.auth.status);
     const navigate = useNavigate();
     const navItems = [
         {
